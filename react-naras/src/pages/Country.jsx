@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCountry } from '../api';
+import style from './Country.module.css';
 
 function Country() {
   const { code } = useParams();
@@ -15,7 +16,41 @@ function Country() {
     setInitData();
   }, [code]);
 
-  return <h1>Country</h1>;
+  if (!country) {
+    return <div>Loading...</div>;
+  }
+  return (
+    <div className={style.container}>
+      <div className={style.header}>
+        <div className={style.commonName}>
+          {country?.flagEmoji}&nbsp;{country?.commonName}
+        </div>
+        <div className={style.officialName}>{country?.officialName}</div>
+      </div>
+      <img src={country?.flagImg} alt={`${country.commonName}의 국기 이미지`} />
+      <div className={style.body}>
+        <div>
+          <b>코드 :</b>&nbsp;{country.code}
+        </div>
+        <div>
+          <b>수도 :</b>&nbsp;{country.capital.join(', ')}
+        </div>
+        <div>
+          <b>지역 :</b>&nbsp;{country.region}
+        </div>
+        <div>
+          <b>지도 :</b>&nbsp;
+          <a
+            href={country.googleMapURL}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {country.googleMapURL}
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Country;
