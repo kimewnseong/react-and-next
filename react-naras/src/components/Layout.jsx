@@ -12,7 +12,7 @@ function Layout({ children }) {
     <div>
       <header className={style.header}>
         <div className={style.headerIcon} onClick={onClickHeader}>
-          🌏 Naras
+          🌏 NARAS
         </div>
       </header>
       <main className={style.main}>{children}</main>
