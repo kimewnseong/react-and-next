@@ -52,5 +52,7 @@ export const getStaticProps = async (context) => {
     props: {
       country,
     },
+    // ISR 방식을 위한 속성
+    revalidate: 3,
   };
 };
