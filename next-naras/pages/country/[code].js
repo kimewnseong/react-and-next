@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { getCountry } from '@/api';
 import SubLayout from '@/components/SubLayout';
+import style from './[code].module.css';
 
 function Country({ country }) {
   const router = useRouter();
@@ -14,8 +16,41 @@ function Country({ country }) {
   }
 
   return (
-    <div>
-      {country.commonName} : {country.officialName}
+    <div className={style.container}>
+      <div className={style.header}>
+        <div className={style.commonName}>
+          {country?.flagEmoji}&nbsp;{country?.commonName}
+        </div>
+        <div className={style.officialName}>{country?.officialName}</div>
+      </div>
+      <div className={style.flag_img}>
+        <Image
+          src={country.flagImg}
+          fill
+          alt={`${country.commonName}의 국기 이미지`}
+        />
+      </div>
+      <div className={style.body}>
+        <div>
+          <b>코드 :</b>&nbsp;{country.code}
+        </div>
+        <div>
+          <b>수도 :</b>&nbsp;{country.capital.join(', ')}
+        </div>
+        <div>
+          <b>지역 :</b>&nbsp;{country.region}
+        </div>
+        <div>
+          <b>지도 :</b>&nbsp;
+          <a
+            href={country.googleMapURL}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {country.googleMapURL}
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
@@ -53,6 +88,6 @@ export const getStaticProps = async (context) => {
       country,
     },
     // ISR 방식을 위한 속성
-    revalidate: 3,
+    revalidate: 10,
   };
 };
