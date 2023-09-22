@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getSearchCountries } from '@/api';
 import SubLayout from '@/components/SubLayout';
+import SearchBar from '@/components/SearchBar';
+import CountryList from '@/components/CountryList';
 
 function Search() {
   const router = useRouter();
@@ -20,11 +22,10 @@ function Search() {
   }, [search]);
 
   return (
-    <div>
-      {countries.map((country) => (
-        <div key={country.code}>{country.commonName}</div>
-      ))}
-    </div>
+    <>
+      <SearchBar item={search} />
+      <CountryList countries={countries} />
+    </>
   );
 }
 
