@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import style from './CountryItem.module.css';
 
 function CountryItem({
@@ -18,7 +19,9 @@ function CountryItem({
 
   return (
     <div className={style.container} onClick={onClickItem}>
-      <img className={style.flag_img} src={flagImg} />
+      <div className={style.flag_img}>
+        <Image src={flagImg} fill alt="국기 이미지" />
+      </div>
       <div className={style.content}>
         <div className={style.name}>
           {flagEmoji} {commonName}
