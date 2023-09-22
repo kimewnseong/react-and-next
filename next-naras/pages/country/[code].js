@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router';
+import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { getCountry } from '@/api';
 import SubLayout from '@/components/SubLayout';
 import style from './[code].module.css';
@@ -8,7 +9,20 @@ function Country({ country }) {
   const router = useRouter();
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <Head>
+          <title>NARAS</title>
+          <meta property="og:image" content="/thumbnail.png" />
+          <meta property="og:title" content="NARAS" />
+          <meta
+            property="og:description"
+            content="전 세계 국가들의 정보를 간략하게 보여주는 사이트"
+          />
+        </Head>
+        <div>Loading...</div>
+      </>
+    );
   }
 
   if (!country) {
@@ -16,42 +30,56 @@ function Country({ country }) {
   }
 
   return (
-    <div className={style.container}>
-      <div className={style.header}>
-        <div className={style.commonName}>
-          {country?.flagEmoji}&nbsp;{country?.commonName}
-        </div>
-        <div className={style.officialName}>{country?.officialName}</div>
-      </div>
-      <div className={style.flag_img}>
-        <Image
-          src={country.flagImg}
-          fill
-          alt={`${country.commonName}의 국기 이미지`}
+    <>
+      <Head>
+        <title>{country.commonName}국가 정보 | NARAS</title>
+        <meta property="og:image" content={country.flagImg} />
+        <meta
+          property="og:title"
+          content={`${country.commonName}국가 정보 | NARAS`}
         />
+        <meta
+          property="og:description"
+          content={`${country.commonName}국가의 자세한 정보`}
+        />
+      </Head>
+      <div className={style.container}>
+        <div className={style.header}>
+          <div className={style.commonName}>
+            {country?.flagEmoji}&nbsp;{country?.commonName}
+          </div>
+          <div className={style.officialName}>{country?.officialName}</div>
+        </div>
+        <div className={style.flag_img}>
+          <Image
+            src={country.flagImg}
+            fill
+            alt={`${country.commonName}의 국기 이미지`}
+          />
+        </div>
+        <div className={style.body}>
+          <div>
+            <b>코드 :</b>&nbsp;{country.code}
+          </div>
+          <div>
+            <b>수도 :</b>&nbsp;{country.capital.join(', ')}
+          </div>
+          <div>
+            <b>지역 :</b>&nbsp;{country.region}
+          </div>
+          <div>
+            <b>지도 :</b>&nbsp;
+            <a
+              href={country.googleMapURL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {country.googleMapURL}
+            </a>
+          </div>
+        </div>
       </div>
-      <div className={style.body}>
-        <div>
-          <b>코드 :</b>&nbsp;{country.code}
-        </div>
-        <div>
-          <b>수도 :</b>&nbsp;{country.capital.join(', ')}
-        </div>
-        <div>
-          <b>지역 :</b>&nbsp;{country.region}
-        </div>
-        <div>
-          <b>지도 :</b>&nbsp;
-          <a
-            href={country.googleMapURL}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {country.googleMapURL}
-          </a>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
